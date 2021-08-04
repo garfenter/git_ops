@@ -156,9 +156,14 @@ defmodule Mix.Tasks.GitOps.Release do
           GitOps.Version.last_valid_non_rc_version(tags, prefix)
         end
 
-      commits_for_version = Git.commit_messages_since_tag(repo, tag)
+      IO.inspect("COMPARING AGAISNT TAG")
+      IO.inspect(tag)
 
+      commits_for_version = Git.commit_messages_since_tag(repo, tag)
+      IO.inspect(commits_for_version)
       last_version_after = GitOps.Version.last_version_greater_than(tags, tag, prefix)
+      IO.inspect("LAST VERSION AFTER")
+      IO.inspect(last_version_after)
 
       if last_version_after do
         commit_messages_for_changelog = Git.commit_messages_since_tag(repo, last_version_after)
@@ -252,11 +257,15 @@ defmodule Mix.Tasks.GitOps.Release do
   end
 
   defp parse_commit(text, config_types, log?) do
+    IO.inspect(text)
+
     case Commit.parse(text) do
       {:ok, commits} ->
         commits_with_type(config_types, commits, text, log?)
 
       _ ->
+        error_if_log("Unparseable commit: #{text}", log?)
+
         []
     end
   end
