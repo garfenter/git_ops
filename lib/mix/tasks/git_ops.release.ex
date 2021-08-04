@@ -257,8 +257,6 @@ defmodule Mix.Tasks.GitOps.Release do
         commits_with_type(config_types, commits, text, log?)
 
       _ ->
-        error_if_log("Unparseable commit: #{text}", log?)
-
         []
     end
   end
